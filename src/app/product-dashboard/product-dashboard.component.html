@@ -1,0 +1,95 @@
+<div class="container">
+  <div class="header">
+    <h2>Listado de Productos</h2>
+    <div>
+      <!-- 1. Botón para cargar datos, se muestra solo si no se ha cargado nunca -->
+      <button *ngIf="!hasLoadedOnce" class="btn btn-success me-2" (click)="loadDataOnClick()" [disabled]="isLoading">
+        <span *ngIf="!isLoading">Cargar Productos</span>
+        <span *ngIf="isLoading">Cargando...</span>
+      </button>
+      <!-- El botón de agregar siempre está visible -->
+      <button class="btn btn-primary" (click)="openModal(content)">Agregar producto</button>
+    </div>
+  </div>
+
+  <!-- 2. Mensaje inicial si no se ha cargado nada -->
+  <div *ngIf="!hasLoadedOnce && !isLoading" class="empty-state">
+    <p>No hay productos para mostrar.</p>
+    <p>Haz clic en "Cargar Productos" para desplegar la lista.</p>
+  </div>
+
+  <!-- 3. Mensaje de carga (se muestra mientras se cargan los datos) -->
+  <div *ngIf="isLoading" class="loading">Cargando productos...</div>
+
+  <!-- 4. La tabla solo se muestra si ya se cargaron datos y hay productos -->
+  <div class="table-wrapper" *ngIf="!isLoading && hasLoadedOnce && products.length > 0">
+    <table class="table products-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Precio</th>
+          <th>Stock</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of products">
+          <td data-label="ID">{{ product.id }}</td>
+          <td data-label="Nombre">{{ product.name }}</td>
+          <td data-label="Precio">{{ product.price | currency:'CLP':'symbol' }}</td>
+          <td data-label="Stock">{{ product.stock }}</td>
+          <td data-label="Acciones">
+            <button class="btn btn-warning btn-sm me-2" (click)="openModalForEdit(product, content)">Editar</button>
+            <button class="btn btn-danger btn-sm" (click)="deleteProduct(product.id)">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 5. Mensaje si la lista está vacía después de cargar -->
+  <div *ngIf="!isLoading && hasLoadedOnce && products.length === 0" class="empty-state">
+    <p>No se encontraron productos.</p>
+    <p>¡Agrega uno nuevo usando el botón de arriba!</p>
+  </div>
+</div>
+
+<!-- El código del modal se mantiene igual -->
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">{{ modalTitle }}</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+    <div class="modal-body">
+      <div class="mb-3">
+        <label for="name" class="form-label">Nombre del Producto</label>
+        <input type="text" class="form-control" id="name" formControlName="name">
+        <div *ngIf="f['name'].invalid && (f['name'].dirty || f['name'].touched)" class="invalid-feedback">
+          El nombre es obligatorio.
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="price" class="form-label">Precio</label>
+        <input type="number" class="form-control" id="price" formControlName="price">
+        <div *ngIf="f['price'].invalid && (f['price'].dirty || f['price'].touched)" class="invalid-feedback">
+          <div *ngIf="f['price'].errors?.['required']">El precio es obligatorio.</div>
+          <div *ngIf="f['price'].errors?.['min']">El precio debe ser mayor a 0.</div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="stock" class="form-label">Stock</label>
+        <input type="number" class="form-control" id="stock" formControlName="stock">
+        <div *ngIf="f['stock'].invalid && (f['stock'].dirty || f['stock'].touched)" class="invalid-feedback">
+          <div *ngIf="f['stock'].errors?.['required']">El stock es obligatorio.</div>
+          <div *ngIf="f['stock'].errors?.['min']">El stock no puede ser negativo.</div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="modal.close()">Cancelar</button>
+      <button type="submit" class="btn btn-primary" [disabled]="productForm.invalid">Guardar</button>
+    </div>
+  </form>
+</ng-template>

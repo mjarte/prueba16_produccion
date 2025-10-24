@@ -1,0 +1,40 @@
+{
+  "products": [
+    {
+      "name": "Laptop Pro 15 pulgadas",
+      "price": 1200.5,
+      "stock": 25,
+      "id": "7fj4"
+    },
+    {
+      "name": "Mouse Gamer Inalámbrico",
+      "price": 75.99,
+      "stock": 150,
+      "id": "3jd6"
+    },
+    {
+      "id": "0jd4",
+      "name": "Teclado Mecánico RGB",
+      "price": 110,
+      "stock": 80
+    },
+    {
+      "id": "hj45",
+      "name": "Monitor 4K 27 pulgadas",
+      "price": 450.75,
+      "stock": 40
+    },
+    {
+      "id": "78fdd",
+      "name": "Webcam Full HD",
+      "price": 55.2,
+      "stock": 200
+    },
+    {
+      "id": "8a52",
+      "name": "Notebook i9",
+      "price": 2000000,
+      "stock": 10
+    }
+  ]
+}
