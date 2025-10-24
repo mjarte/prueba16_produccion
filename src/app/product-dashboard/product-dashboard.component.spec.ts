@@ -1,8 +1,6 @@
-// src/app/product-dashboard/product-dashboard.component.spec.ts
-
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-// 1. Asegúrate de importar estos módulos
+
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -15,7 +13,7 @@ describe('ProductDashboardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      // 2. Añade los módulos que tu componente necesita para funcionar en las pruebas
+
       imports: [
         ReactiveFormsModule,
         HttpClientModule,

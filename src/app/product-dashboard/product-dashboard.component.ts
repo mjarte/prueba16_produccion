@@ -11,9 +11,9 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 })
 export class ProductDashboardComponent implements OnInit {
   products: Product[] = [];
-  // 1. El estado inicial no es de carga
+
   isLoading: boolean = false;
-  hasLoadedOnce: boolean = false; // Para saber si ya se cargó al menos una vez
+  hasLoadedOnce: boolean = false;
 
   modalRef: NgbModalRef | null = null;
   productForm!: FormGroup;
@@ -25,7 +25,7 @@ export class ProductDashboardComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // 2. Ya no llamamos a loadProducts() aquí
+
     this.productForm = new FormGroup({
       name: new FormControl('', [Validators.required]),
       price: new FormControl(0, [Validators.required, Validators.min(1)]),
@@ -33,14 +33,14 @@ export class ProductDashboardComponent implements OnInit {
     });
   }
 
-  // 3. El método loadProducts sigue siendo el mismo
+
   loadProducts(): void {
     this.isLoading = true;
     this.productService.getProducts().subscribe({
       next: (data) => {
         this.products = data;
         this.isLoading = false;
-        this.hasLoadedOnce = true; // Marcamos que ya se ha cargado
+        this.hasLoadedOnce = true;
       },
       error: (err) => {
         console.error('Error al cargar productos:', err);
@@ -50,7 +50,7 @@ export class ProductDashboardComponent implements OnInit {
     });
   }
 
-  // 4. Nuevo método que se llamará desde el botón
+
   loadDataOnClick(): void {
     this.loadProducts();
   }
@@ -61,7 +61,7 @@ export class ProductDashboardComponent implements OnInit {
 
     this.productService.deleteProduct(id).subscribe({
       next: () => {
-        this.loadProducts(); // Recargamos la lista después de eliminar
+        this.loadProducts();
       },
       error: (err) => {
         console.error('Error al eliminar el producto:', err);
@@ -85,7 +85,7 @@ export class ProductDashboardComponent implements OnInit {
       this.productService.updateProduct(updatedProduct).subscribe({
         next: () => {
           this.modalRef?.close();
-          this.loadProducts(); // Recargamos la lista después de editar
+          this.loadProducts();
         },
         error: (err) => {
           console.error('Error al actualizar el producto:', err);
@@ -96,7 +96,7 @@ export class ProductDashboardComponent implements OnInit {
       this.productService.addProduct(formData).subscribe({
         next: () => {
           this.modalRef?.close();
-          this.loadProducts(); // Recargamos la lista después de agregar
+          this.loadProducts();
         },
         error: (err) => {
           console.error('Error al agregar el producto:', err);
